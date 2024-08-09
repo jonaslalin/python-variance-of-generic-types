@@ -7,48 +7,48 @@ T_in = TypeVar("T_in", contravariant=True)
 # T_contra = TypeVar("T_contra", contravariant=True)
 
 
-class Sink(ABC, Generic[T_in]):
+class Consumer(ABC, Generic[T_in]):
     @abstractmethod
     def consume(self, value: T_in, /) -> None: ...
 
 
-class PureASink(Sink[A]):
+class PureAConsumer(Consumer[A]):
     def consume(self, a: A, /) -> None:
-        print(f"doing consume from {self.__class__.__name__}")
+        print(f"doing consume in {self.__class__.__name__}")
         a.foo()
 
 
-class PureBSink(Sink[B]):
+class PureBConsumer(Consumer[B]):
     def consume(self, b: B, /) -> None:
-        print(f"doing consume from {self.__class__.__name__}")
+        print(f"doing consume in {self.__class__.__name__}")
         b.foo()
         b.bar()
 
 
-class PureCSink(Sink[C]):
+class PureCConsumer(Consumer[C]):
     def consume(self, c: C, /) -> None:
-        print(f"doing consume from {self.__class__.__name__}")
+        print(f"doing consume in {self.__class__.__name__}")
         c.foo()
         c.bar()
         c.baz()
 
 
-def with_some_a_sink(a_sink: Sink[A]) -> None:
+def with_some_a_consumer(a_consumer: Consumer[A]) -> None:
     a, b, c = A(), B(), C()
-    a_sink.consume(a)
-    a_sink.consume(b)
-    a_sink.consume(c)
+    a_consumer.consume(a)
+    a_consumer.consume(b)
+    a_consumer.consume(c)
 
 
-def with_some_b_sink(b_sink: Sink[B]) -> None:
+def with_some_b_consumer(b_consumer: Consumer[B]) -> None:
     a, b, c = A(), B(), C()  # noqa: F841
-    # b_sink.consume(a)
-    b_sink.consume(b)
-    b_sink.consume(c)
+    # b_consumer.consume(a)
+    b_consumer.consume(b)
+    b_consumer.consume(c)
 
 
-def with_some_c_sink(c_sink: Sink[C]) -> None:
+def with_some_c_consumer(c_consumer: Consumer[C]) -> None:
     a, b, c = A(), B(), C()  # noqa: F841
-    # c_sink.consume(a)
-    # c_sink.consume(b)
-    c_sink.consume(c)
+    # c_consumer.consume(a)
+    # c_consumer.consume(b)
+    c_consumer.consume(c)

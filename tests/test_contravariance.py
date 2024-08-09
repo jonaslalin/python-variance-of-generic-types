@@ -1,107 +1,119 @@
 import pytest
 
 from variance.contravariance import (
-    PureASink,
-    PureBSink,
-    PureCSink,
-    with_some_a_sink,
-    with_some_b_sink,
-    with_some_c_sink,
+    PureAConsumer,
+    PureBConsumer,
+    PureCConsumer,
+    with_some_a_consumer,
+    with_some_b_consumer,
+    with_some_c_consumer,
 )
 
 
-def test_with_some_a_sink(capsys: pytest.CaptureFixture[str]) -> None:
-    a_sink, b_sink, c_sink = PureASink(), PureBSink(), PureCSink()  # noqa: F841
+def test_with_some_a_consumer(capsys: pytest.CaptureFixture[str]) -> None:
+    a_consumer, b_consumer, c_consumer = (
+        PureAConsumer(),
+        PureBConsumer(),
+        PureCConsumer(),
+    )  # noqa: F841
 
-    with_some_a_sink(a_sink)
+    with_some_a_consumer(a_consumer)
 
     captured_out = capsys.readouterr().out
     assert (
         captured_out
         == (
-            "doing consume from PureASink\n"  #
-            "doing foo from A\n"
-            "doing consume from PureASink\n"
-            "doing foo from B\n"
-            "doing consume from PureASink\n"
-            "doing foo from C\n"
+            "doing consume in PureAConsumer\n"  #
+            "doing foo in A\n"
+            "doing consume in PureAConsumer\n"
+            "doing foo in B\n"
+            "doing consume in PureAConsumer\n"
+            "doing foo in C\n"
         )
     )
 
-    # with_some_a_sink(b_sink)
+    # with_some_a_consumer(b_consumer)
 
-    # with_some_a_sink(c_sink)
+    # with_some_a_consumer(c_consumer)
 
 
-def test_with_some_b_sink(capsys: pytest.CaptureFixture[str]) -> None:
-    a_sink, b_sink, c_sink = PureASink(), PureBSink(), PureCSink()  # noqa: F841
+def test_with_some_b_consumer(capsys: pytest.CaptureFixture[str]) -> None:
+    a_consumer, b_consumer, c_consumer = (
+        PureAConsumer(),
+        PureBConsumer(),
+        PureCConsumer(),
+    )  # noqa: F841
 
-    with_some_b_sink(a_sink)
+    with_some_b_consumer(a_consumer)
 
     captured_out = capsys.readouterr().out
     assert (
         captured_out
         == (
-            "doing consume from PureASink\n"  #
-            "doing foo from B\n"
-            "doing consume from PureASink\n"
-            "doing foo from C\n"
+            "doing consume in PureAConsumer\n"  #
+            "doing foo in B\n"
+            "doing consume in PureAConsumer\n"
+            "doing foo in C\n"
         )
     )
 
-    with_some_b_sink(b_sink)
+    with_some_b_consumer(b_consumer)
 
     captured_out = capsys.readouterr().out
     assert (
         captured_out
         == (
-            "doing consume from PureBSink\n"  #
-            "doing foo from B\n"
-            "doing bar from B\n"
-            "doing consume from PureBSink\n"
-            "doing foo from C\n"
-            "doing bar from C\n"
+            "doing consume in PureBConsumer\n"  #
+            "doing foo in B\n"
+            "doing bar in B\n"
+            "doing consume in PureBConsumer\n"
+            "doing foo in C\n"
+            "doing bar in C\n"
         )
     )
 
-    # with_some_b_sink(c_sink)
+    # with_some_b_consumer(c_consumer)
 
 
-def test_with_some_c_sink(capsys: pytest.CaptureFixture[str]) -> None:
-    a_sink, b_sink, c_sink = PureASink(), PureBSink(), PureCSink()
+def test_with_some_c_consumer(capsys: pytest.CaptureFixture[str]) -> None:
+    a_consumer, b_consumer, c_consumer = (
+        PureAConsumer(),
+        PureBConsumer(),
+        PureCConsumer(),
+    )
 
-    with_some_c_sink(a_sink)
+    with_some_c_consumer(a_consumer)
 
     captured_out = capsys.readouterr().out
     assert (
         captured_out
         == (
-            "doing consume from PureASink\n"  #
-            "doing foo from C\n"
+            "doing consume in PureAConsumer\n"  #
+            "doing foo in C\n"
         )
     )
 
-    with_some_c_sink(b_sink)
+    with_some_c_consumer(b_consumer)
 
     captured_out = capsys.readouterr().out
     assert (
         captured_out
         == (
-            "doing consume from PureBSink\n"  #
-            "doing foo from C\n"
-            "doing bar from C\n"
+            "doing consume in PureBConsumer\n"  #
+            "doing foo in C\n"
+            "doing bar in C\n"
         )
     )
 
-    with_some_c_sink(c_sink)
+    with_some_c_consumer(c_consumer)
 
     captured_out = capsys.readouterr().out
     assert (
         captured_out
         == (
-            "doing consume from PureCSink\n"  #
-            "doing foo from C\n"
-            "doing bar from C\n"
-            "doing baz from C\n"
+            "doing consume in PureCConsumer\n"  #
+            "doing foo in C\n"
+            "doing bar in C\n"
+            "doing baz in C\n"
         )
     )
