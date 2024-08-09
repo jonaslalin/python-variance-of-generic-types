@@ -11,11 +11,11 @@ from variance.contravariance import (
 
 
 def test_with_some_a_consumer(capsys: pytest.CaptureFixture[str]) -> None:
-    a_consumer, b_consumer, c_consumer = (
+    a_consumer, b_consumer, c_consumer = (  # noqa: F841
         PureAConsumer(),
         PureBConsumer(),
         PureCConsumer(),
-    )  # noqa: F841
+    )
 
     with_some_a_consumer(a_consumer)
 
@@ -38,11 +38,11 @@ def test_with_some_a_consumer(capsys: pytest.CaptureFixture[str]) -> None:
 
 
 def test_with_some_b_consumer(capsys: pytest.CaptureFixture[str]) -> None:
-    a_consumer, b_consumer, c_consumer = (
+    a_consumer, b_consumer, c_consumer = (  # noqa: F841
         PureAConsumer(),
         PureBConsumer(),
         PureCConsumer(),
-    )  # noqa: F841
+    )
 
     with_some_b_consumer(a_consumer)
 
