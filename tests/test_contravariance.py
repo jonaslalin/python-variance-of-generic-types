@@ -1,9 +1,9 @@
 import pytest
 
 from variance.contravariance import (
-    ConcreteASink,
-    ConcreteBSink,
-    ConcreteCSink,
+    PureASink,
+    PureBSink,
+    PureCSink,
     with_some_a_sink,
     with_some_b_sink,
     with_some_c_sink,
@@ -11,72 +11,97 @@ from variance.contravariance import (
 
 
 def test_with_some_a_sink(capsys: pytest.CaptureFixture[str]) -> None:
-    with_some_a_sink(ConcreteASink())
+    a_sink, b_sink, c_sink = PureASink(), PureBSink(), PureCSink()  # noqa: F841
+
+    with_some_a_sink(a_sink)
+
     captured_out = capsys.readouterr().out
     assert (
         captured_out
         == (
-            "foo\n"  # from `a_sink.consume(a)`
-            "foo\n"  # from `a_sink.consume(b)`
-            "foo\n"  # from `a_sink.consume(c)`
+            "doing consume from PureASink\n"  #
+            "doing foo from A\n"
+            "doing consume from PureASink\n"
+            "doing foo from B\n"
+            "doing consume from PureASink\n"
+            "doing foo from C\n"
         )
     )
 
-    # with_some_a_sink(ConcreteBSink())
+    # with_some_a_sink(b_sink)
 
-    # with_some_a_sink(ConcreteCSink())
+    # with_some_a_sink(c_sink)
 
 
 def test_with_some_b_sink(capsys: pytest.CaptureFixture[str]) -> None:
-    with_some_b_sink(ConcreteASink())
+    a_sink, b_sink, c_sink = PureASink(), PureBSink(), PureCSink()  # noqa: F841
+
+    with_some_b_sink(a_sink)
+
     captured_out = capsys.readouterr().out
     assert (
         captured_out
         == (
-            "foo\n"  # from `a_sink.consume(b)`
-            "foo\n"  # from `a_sink.consume(c)`
+            "doing consume from PureASink\n"  #
+            "doing foo from B\n"
+            "doing consume from PureASink\n"
+            "doing foo from C\n"
         )
     )
 
-    with_some_b_sink(ConcreteBSink())
+    with_some_b_sink(b_sink)
+
     captured_out = capsys.readouterr().out
     assert (
         captured_out
         == (
-            "foo\n"  # from `b_sink.consume(b)`
-            "bar\n"  # from `b_sink.consume(b)`
-            "foo\n"  # from `b_sink.consume(c)`
-            "bar\n"  # from `b_sink.consume(c)`
+            "doing consume from PureBSink\n"  #
+            "doing foo from B\n"
+            "doing bar from B\n"
+            "doing consume from PureBSink\n"
+            "doing foo from C\n"
+            "doing bar from C\n"
         )
     )
 
-    # with_some_b_sink(ConcreteCSink())
+    # with_some_b_sink(c_sink)
 
 
 def test_with_some_c_sink(capsys: pytest.CaptureFixture[str]) -> None:
-    with_some_c_sink(ConcreteASink())
-    captured_out = capsys.readouterr().out
-    assert captured_out == (
-        "foo\n"  # from `a_sink.consume(c)`
-    )
+    a_sink, b_sink, c_sink = PureASink(), PureBSink(), PureCSink()
 
-    with_some_c_sink(ConcreteBSink())
+    with_some_c_sink(a_sink)
+
     captured_out = capsys.readouterr().out
     assert (
         captured_out
         == (
-            "foo\n"  # from `b_sink.consume(c)`
-            "bar\n"  # from `b_sink.consume(c)`
+            "doing consume from PureASink\n"  #
+            "doing foo from C\n"
         )
     )
 
-    with_some_c_sink(ConcreteCSink())
+    with_some_c_sink(b_sink)
+
     captured_out = capsys.readouterr().out
     assert (
         captured_out
         == (
-            "foo\n"  # from `c_sink.consume(c)`
-            "bar\n"  # from `c_sink.consume(c)`
-            "baz\n"  # from `c_sink.consume(c)`
+            "doing consume from PureBSink\n"  #
+            "doing foo from C\n"
+            "doing bar from C\n"
+        )
+    )
+
+    with_some_c_sink(c_sink)
+
+    captured_out = capsys.readouterr().out
+    assert (
+        captured_out
+        == (
+            "doing consume from PureCSink\n"  #
+            "doing foo from C\n"
+            "doing bar from C\n"
+            "doing baz from C\n"
         )
     )
