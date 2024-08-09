@@ -54,9 +54,21 @@ def test_with_some_b_sink(capsys: pytest.CaptureFixture[str]) -> None:
 
 
 def test_with_some_c_sink(capsys: pytest.CaptureFixture[str]) -> None:
-    # with_some_c_sink(ConcreteASink())
+    with_some_c_sink(ConcreteASink())
+    captured_out = capsys.readouterr().out
+    assert captured_out == (
+        "foo\n"  # from `a_sink.consume(c)`
+    )
 
-    # with_some_c_sink(ConcreteBSink())
+    with_some_c_sink(ConcreteBSink())
+    captured_out = capsys.readouterr().out
+    assert (
+        captured_out
+        == (
+            "foo\n"  # from `b_sink.consume(c)`
+            "bar\n"  # from `b_sink.consume(c)`
+        )
+    )
 
     with_some_c_sink(ConcreteCSink())
     captured_out = capsys.readouterr().out
