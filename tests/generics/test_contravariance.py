@@ -1,6 +1,6 @@
 import pytest
 
-from variance.contravariance import (
+from generics.contravariance import (
     PureAConsumer,
     PureBConsumer,
     PureCConsumer,
