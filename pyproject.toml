@@ -30,7 +30,8 @@ disable_warnings = [
 ]
 parallel = true
 source_pkgs = [
-    "generics",
+    "example1",
+    "example2",
 ]
 
 [tool.coverage.paths]
@@ -150,7 +151,8 @@ deps =
     mypy
     pytest
 commands =
-    python -m mypy -p generics
+    python -m mypy -p example1
+    python -m mypy -p example2
     python -m mypy --explicit-package-bases tests/
 
 [testenv:ruffformat]

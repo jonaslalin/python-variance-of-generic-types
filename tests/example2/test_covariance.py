@@ -1,6 +1,6 @@
 import pytest
 
-from generics.covariance import (
+from example2.covariance import (
     PureAProducer,
     PureBProducer,
     PureCProducer,
