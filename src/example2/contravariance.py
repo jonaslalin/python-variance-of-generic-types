@@ -1,54 +1,38 @@
-from abc import ABC, abstractmethod
-from typing import Generic, TypeVar
+from typing import Callable, TypeVar
 
-from .models import A, B, C
+from typing_extensions import TypeAlias
 
-T_in = TypeVar("T_in", contravariant=True)
-# T_contra = TypeVar("T_contra", contravariant=True)
+from example1.world import consume_a, consume_b, consume_c, consume_d, produce_a, produce_b, produce_c, produce_d
 
+T_contra = TypeVar("T_contra", contravariant=True)
+# T_in = TypeVar("T_in", contravariant=True)
 
-class Consumer(ABC, Generic[T_in]):
-    @abstractmethod
-    def consume(self, value: T_in, /) -> None: ...
+ConsumeFn: TypeAlias = Callable[[T_contra], None]
 
 
-class PureAConsumer(Consumer[A]):
-    def consume(self, a: A, /) -> None:
-        print(f"doing consume in {self.__class__.__name__}")
-        a.foo()
+def with_consume_fn(consume_fn: ConsumeFn[T_contra], something: T_contra) -> None:
+    consume_fn(something)
 
 
-class PureBConsumer(Consumer[B]):
-    def consume(self, b: B, /) -> None:
-        print(f"doing consume in {self.__class__.__name__}")
-        b.foo()
-        b.bar()
+with_consume_fn(consume_a, produce_a())
+with_consume_fn(consume_a, produce_b())
+with_consume_fn(consume_a, produce_c())
+with_consume_fn(consume_a, produce_d())
 
 
-class PureCConsumer(Consumer[C]):
-    def consume(self, c: C, /) -> None:
-        print(f"doing consume in {self.__class__.__name__}")
-        c.foo()
-        c.bar()
-        c.baz()
+with_consume_fn(consume_b, produce_a())
+with_consume_fn(consume_b, produce_b())
+with_consume_fn(consume_b, produce_c())
+with_consume_fn(consume_b, produce_d())
 
 
-def with_some_a_consumer(a_consumer: Consumer[A]) -> None:
-    a, b, c = A(), B(), C()
-    a_consumer.consume(a)
-    a_consumer.consume(b)
-    a_consumer.consume(c)
+with_consume_fn(consume_c, produce_a())
+with_consume_fn(consume_c, produce_b())
+with_consume_fn(consume_c, produce_c())
+with_consume_fn(consume_c, produce_d())
 
 
-def with_some_b_consumer(b_consumer: Consumer[B]) -> None:
-    a, b, c = A(), B(), C()  # noqa: F841
-    # b_consumer.consume(a)
-    b_consumer.consume(b)
-    b_consumer.consume(c)
-
-
-def with_some_c_consumer(c_consumer: Consumer[C]) -> None:
-    a, b, c = A(), B(), C()  # noqa: F841
-    # c_consumer.consume(a)
-    # c_consumer.consume(b)
-    c_consumer.consume(c)
+with_consume_fn(consume_d, produce_a())
+with_consume_fn(consume_d, produce_b())
+with_consume_fn(consume_d, produce_c())
+with_consume_fn(consume_d, produce_d())

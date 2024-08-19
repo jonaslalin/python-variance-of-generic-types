@@ -1,54 +1,39 @@
-from abc import ABC, abstractmethod
-from typing import Generic, TypeVar
+from typing import Callable, TypeVar
 
-from .models import A, B, C
+from typing_extensions import TypeAlias
 
-T_out = TypeVar("T_out", covariant=True)
-# T_co = TypeVar("T_co", covariant=True)
+from example1.world import consume_a, consume_b, consume_c, consume_d, produce_a, produce_b, produce_c, produce_d
 
+T_co = TypeVar("T_co", covariant=True)
+# T_out = TypeVar("T_out", covariant=True)
 
-class Producer(ABC, Generic[T_out]):
-    @abstractmethod
-    def produce(self) -> T_out: ...
+ProduceFn: TypeAlias = Callable[[], T_co]
 
 
-class PureAProducer(Producer[A]):
-    def produce(self) -> A:
-        print(f"doing produce in {self.__class__.__name__}")
-        a = A()
-        return a
+def with_produce_fn(produce_fn: ProduceFn[T_co]) -> T_co:
+    something = produce_fn()
+    return something
 
 
-class PureBProducer(Producer[B]):
-    def produce(self) -> B:
-        print(f"doing produce in {self.__class__.__name__}")
-        b = B()
-        return b
+consume_a(with_produce_fn(produce_a))
+consume_b(with_produce_fn(produce_a))
+consume_c(with_produce_fn(produce_a))
+consume_d(with_produce_fn(produce_a))
 
 
-class PureCProducer(Producer[C]):
-    def produce(self) -> C:
-        print(f"doing produce in {self.__class__.__name__}")
-        c = C()
-        return c
+consume_a(with_produce_fn(produce_b))
+consume_b(with_produce_fn(produce_b))
+consume_c(with_produce_fn(produce_b))
+consume_d(with_produce_fn(produce_b))
 
 
-def with_some_a_producer(a_producer: Producer[A]) -> None:
-    a = a_producer.produce()
-    a.foo()
-    # a.bar()
-    # a.baz()
+consume_a(with_produce_fn(produce_c))
+consume_b(with_produce_fn(produce_c))
+consume_c(with_produce_fn(produce_c))
+consume_d(with_produce_fn(produce_c))
 
 
-def with_some_b_producer(b_producer: Producer[B]) -> None:
-    b = b_producer.produce()
-    b.foo()
-    b.bar()
-    # b.baz()
-
-
-def with_some_c_producer(c_producer: Producer[C]) -> None:
-    c = c_producer.produce()
-    c.foo()
-    c.bar()
-    c.baz()
+consume_a(with_produce_fn(produce_d))
+consume_b(with_produce_fn(produce_d))
+consume_c(with_produce_fn(produce_d))
+consume_d(with_produce_fn(produce_d))
