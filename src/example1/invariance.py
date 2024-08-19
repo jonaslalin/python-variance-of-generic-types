@@ -21,7 +21,7 @@ def delegate_consume_c_and_produce_c(consume_c_and_produce_c: Callable[[C], C]) 
     consume_c(new_c)
 
 
-def delegate_produce_d_and_consume_d(consume_d_and_produce_d: Callable[[D], D]) -> None:
+def delegate_consume_d_and_produce_d(consume_d_and_produce_d: Callable[[D], D]) -> None:
     d = produce_d()
     new_d = consume_d_and_produce_d(d)
     consume_d(new_d)
