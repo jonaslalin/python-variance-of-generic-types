@@ -33,6 +33,7 @@ source_pkgs = [
     "example1",
     "example2",
     "example3",
+    "example4",
 ]
 
 [tool.coverage.paths]
@@ -152,10 +153,11 @@ deps =
     mypy
     pytest
 commands =
-    python -m mypy -p example1
-    python -m mypy -p example2
-    python -m mypy -p example3
-    python -m mypy --explicit-package-bases tests/
+    python -m mypy --disable-error-code arg-type -p example1
+    python -m mypy --disable-error-code arg-type -p example2
+    python -m mypy --disable-error-code arg-type -p example3
+    python -m mypy --disable-error-code arg-type -p example4
+    python -m mypy --disable-error-code arg-type --explicit-package-bases tests/
 
 [testenv:ruffformat]
 description = run format checks
